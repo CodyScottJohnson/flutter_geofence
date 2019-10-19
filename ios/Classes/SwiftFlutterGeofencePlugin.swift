@@ -63,12 +63,14 @@ public class SwiftFlutterGeofencePlugin: NSObject, UIApplicationDelegate {
     }
     func startGeofencingService(_ handle: Int64) {
         print("startGeofencingService()");
+        print("Handle: ", handle);
         self.setCallbackDispatcherHandle(handle)
         let info = FlutterCallbackCache.lookupCallbackInformation(handle)
         print("set Callback Dispatch");
         assert(info != nil, "failed to find callback")
         let entrypoint = info?.callbackName
         let uri = info?.callbackLibraryPath
+        print(entrypoint,uri)
         print("Headless Runner");
         _headlessRunner.run(withEntrypoint: entrypoint, libraryURI: uri)
         print("assert runner");
