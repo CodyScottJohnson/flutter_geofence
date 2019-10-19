@@ -62,11 +62,14 @@ public class SwiftFlutterGeofencePlugin: NSObject, UIApplicationDelegate {
                               arguments:[handle, [region.identifier], [center.latitude, center.longitude ], event]);
     }
     func startGeofencingService(_ handle: Int64) {
+        print("startGeofencingService()");
         self.setCallbackDispatcherHandle(handle)
         let info = FlutterCallbackCache.lookupCallbackInformation(handle)
+        print("set Callback Dispatch");
         assert(info != nil, "failed to find callback")
         let entrypoint = info?.callbackName
         let uri = info?.callbackLibraryPath
+        print("Headless Runner");
         _headlessRunner.run(withEntrypoint: entrypoint, libraryURI: uri)
         assert(SwiftFlutterGeofencePlugin.registerPlugins != nil, "failed to set registerPlugins")
         
@@ -74,9 +77,11 @@ public class SwiftFlutterGeofencePlugin: NSObject, UIApplicationDelegate {
         // with the runner in order for them to work on the background isolate. `registerPlugins` is
         // a callback set from AppDelegate.m in the main application. This callback should register
         // all relevant plugins (excluding those which require UI).
-        
+        print("Registering Runner")
         SwiftFlutterGeofencePlugin.registerPlugins!(_headlessRunner)
+         print("Registered Runner")
         _registrar.addMethodCallDelegate(self, channel: _callbackChannel)
+        print("Done")
     }
     func registerGeofence(callbackHandle:Int64,identifier:String, latitude:Double, longitude:Double,radius:Double,triggerMask:Int64) -> Void{
         
@@ -227,8 +232,8 @@ extension SwiftFlutterGeofencePlugin: CLLocationManagerDelegate {
                        
                        objc_sync_enter(self)
                        defer { objc_sync_exit(self) }
-                       print(initialized)
-                       if (initialized) {
+                       print(self.initialized)
+                    if (self.initialized) {
                            
                            print(region.identifier)
                            self.sendLocationEvent(region:region as! CLCircularRegion, event:kExitEvent);
