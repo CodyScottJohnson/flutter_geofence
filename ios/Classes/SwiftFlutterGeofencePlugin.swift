@@ -144,6 +144,7 @@ extension SwiftFlutterGeofencePlugin: FlutterPlugin{
         case "getPlatformVersion":
             result("iOS " + UIDevice.current.systemVersion)
         case "GeofencingPlugin.initializeService":
+            print("Trying to Initialize Server...");
             if let args = arguments as? [Int64] {
                 print("Server Initialized");
                 startGeofencingService(args[0])
@@ -161,11 +162,11 @@ extension SwiftFlutterGeofencePlugin: FlutterPlugin{
                 let event = _eventQueue?[0]
                 _eventQueue.remove(at: 0);
                 //CLRegion*
-                guard let region = event?[kRegionKey],let type = event?[kEventType] as? Int
+                guard let region = event?[kRegionKey] as? CLCircularRegion,let type = event?[kEventType] as? Int
                     else{
                         return
                 };
-                //[self sendLocationEvent:region eventType: type];
+                self.sendLocationEvent(region:region, event: type);
             }
             
             
