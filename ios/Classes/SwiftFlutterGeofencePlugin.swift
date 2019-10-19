@@ -72,6 +72,7 @@ public class SwiftFlutterGeofencePlugin: NSObject, UIApplicationDelegate {
         let uri = info?.callbackLibraryPath
         print(entrypoint,uri)
         print("Headless Runner");
+        print(_headlessRunner!)
         _headlessRunner.run(withEntrypoint: entrypoint, libraryURI: uri)
         print("assert runner");
         assert(SwiftFlutterGeofencePlugin.registerPlugins != nil, "failed to set registerPlugins")
