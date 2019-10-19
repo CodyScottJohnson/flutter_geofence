@@ -211,11 +211,11 @@ extension SwiftFlutterGeofencePlugin: CLLocationManagerDelegate {
                 defer { objc_sync_exit(self) }
                 if (initialized) {
                     
-                    self.sendLocationEvent(region:region as! CLCircularRegion, event:kEnterEvent);
+                    self.sendLocationEvent(region:region as! CLCircularRegion, event:kExitEvent);
                 } else {
                     let dict:[String:Any] = [
                         kRegionKey: region,
-                        kEventType: kEnterEvent
+                        kEventType: kExitEvent
                     ];
                     _eventQueue.append(dict);
                 }
@@ -235,11 +235,11 @@ extension SwiftFlutterGeofencePlugin: CLLocationManagerDelegate {
                 if (self.initialized) {
                     
                     print(region.identifier)
-                    self.sendLocationEvent(region:region as! CLCircularRegion, event:kExitEvent);
+                    self.sendLocationEvent(region:region as! CLCircularRegion, event:kEnterEvent);
                 } else {
                     let dict:[String:Any] = [
                         kRegionKey: region,
-                        kEventType: kExitEvent
+                        kEventType: kEnterEvent
                     ];
                     _eventQueue.append(dict);
                 }
