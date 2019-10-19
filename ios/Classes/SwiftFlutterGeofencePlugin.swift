@@ -21,6 +21,7 @@ public class SwiftFlutterGeofencePlugin: NSObject, UIApplicationDelegate {
     var instance:SwiftFlutterGeofencePlugin! = nil
     private static var registerPlugins:FlutterPluginRegistrantCallback? = nil
     var initialized:Bool = false
+    var servicesStarted:Bool = false
     
     init(registrar:FlutterPluginRegistrar) {
         //super.init(_persisten)
@@ -62,7 +63,7 @@ public class SwiftFlutterGeofencePlugin: NSObject, UIApplicationDelegate {
                                            arguments:[handle, [region.identifier], [center.latitude, center.longitude ], event]);
     }
     func startGeofencingService(_ handle: Int64) {
-        if(self.getCallbackDispatcherHandle() == handle){
+        if(servicesStarted){
             return
         } else {
             self.setCallbackDispatcherHandle(handle)
@@ -79,6 +80,7 @@ public class SwiftFlutterGeofencePlugin: NSObject, UIApplicationDelegate {
             // all relevant plugins (excluding those which require UI).
             SwiftFlutterGeofencePlugin.registerPlugins!(_headlessRunner)
             _registrar.addMethodCallDelegate(self, channel: _callbackChannel)
+            servicesStarted = true
         }
     }
     func registerGeofence(callbackHandle:Int64,identifier:String, latitude:Double, longitude:Double,radius:Double,triggerMask:Int64) -> Void{
