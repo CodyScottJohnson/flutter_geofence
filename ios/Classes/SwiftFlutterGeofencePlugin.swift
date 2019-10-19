@@ -59,33 +59,27 @@ public class SwiftFlutterGeofencePlugin: NSObject, UIApplicationDelegate {
         let center:CLLocationCoordinate2D  = region.center;
         let handle:Int64 = self.getCallbackHandleForRegionId(identifier: region.identifier);
         self._callbackChannel.invokeMethod("",
-                              arguments:[handle, [region.identifier], [center.latitude, center.longitude ], event]);
+                                           arguments:[handle, [region.identifier], [center.latitude, center.longitude ], event]);
     }
     func startGeofencingService(_ handle: Int64) {
-        print("startGeofencingService()");
-        print("Handle: ", handle);
-        self.setCallbackDispatcherHandle(handle)
-        let info = FlutterCallbackCache.lookupCallbackInformation(handle)
-        print("set Callback Dispatch");
-        assert(info != nil, "failed to find callback")
-        let entrypoint = info?.callbackName
-        let uri = info?.callbackLibraryPath
-        print(entrypoint,uri)
-        print("Headless Runner");
-        print(_headlessRunner!)
-        _headlessRunner.run(withEntrypoint: entrypoint, libraryURI: uri)
-        print("assert runner");
-        assert(SwiftFlutterGeofencePlugin.registerPlugins != nil, "failed to set registerPlugins")
-        
-        // Once our headless runner has been started, we need to register the application's plugins
-        // with the runner in order for them to work on the background isolate. `registerPlugins` is
-        // a callback set from AppDelegate.m in the main application. This callback should register
-        // all relevant plugins (excluding those which require UI).
-        print("Registering Runner")
-        SwiftFlutterGeofencePlugin.registerPlugins!(_headlessRunner)
-         print("Registered Runner")
-        _registrar.addMethodCallDelegate(self, channel: _callbackChannel)
-        print("Done")
+        if(self.getCallbackDispatcherHandle() == handle){
+            return
+        } else {
+            self.setCallbackDispatcherHandle(handle)
+            let info = FlutterCallbackCache.lookupCallbackInformation(handle)
+            assert(info != nil, "failed to find callback")
+            let entrypoint = info?.callbackName
+            let uri = info?.callbackLibraryPath
+            _headlessRunner.run(withEntrypoint: entrypoint, libraryURI: uri)
+            assert(SwiftFlutterGeofencePlugin.registerPlugins != nil, "failed to set registerPlugins")
+            
+            // Once our headless runner has been started, we need to register the application's plugins
+            // with the runner in order for them to work on the background isolate. `registerPlugins` is
+            // a callback set from AppDelegate.m in the main application. This callback should register
+            // all relevant plugins (excluding those which require UI).
+            SwiftFlutterGeofencePlugin.registerPlugins!(_headlessRunner)
+            _registrar.addMethodCallDelegate(self, channel: _callbackChannel)
+        }
     }
     func registerGeofence(callbackHandle:Int64,identifier:String, latitude:Double, longitude:Double,radius:Double,triggerMask:Int64) -> Void{
         
@@ -232,28 +226,28 @@ extension SwiftFlutterGeofencePlugin: CLLocationManagerDelegate {
     // called when user Enters a monitored region
     public func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
         print("entered")
-         if region is CLCircularRegion {
-                   {
-                       
-                       objc_sync_enter(self)
-                       defer { objc_sync_exit(self) }
-                       print(self.initialized)
-                    if (self.initialized) {
-                           
-                           print(region.identifier)
-                           self.sendLocationEvent(region:region as! CLCircularRegion, event:kExitEvent);
-                       } else {
-                           let dict:[String:Any] = [
-                               kRegionKey: region,
-                               kEventType: kExitEvent
-                           ];
-                           _eventQueue.append(dict);
-                       }
-                   }()
-               }
+        if region is CLCircularRegion {
+            {
+                
+                objc_sync_enter(self)
+                defer { objc_sync_exit(self) }
+                print(self.initialized)
+                if (self.initialized) {
+                    
+                    print(region.identifier)
+                    self.sendLocationEvent(region:region as! CLCircularRegion, event:kExitEvent);
+                } else {
+                    let dict:[String:Any] = [
+                        kRegionKey: region,
+                        kEventType: kExitEvent
+                    ];
+                    _eventQueue.append(dict);
+                }
+            }()
+        }
     }
     public func locationManager(manager: CLLocationManager, monitoringDidFailForRegion:CLRegion) {
         print("Failed: ",monitoringDidFailForRegion)
     }
-                         
+    
 }
