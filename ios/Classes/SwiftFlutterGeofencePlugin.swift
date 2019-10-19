@@ -43,7 +43,7 @@ public class SwiftFlutterGeofencePlugin: NSObject, UIApplicationDelegate {
         
         _callbackChannel = FlutterMethodChannel(name:"plugins.flutter.io/geofencing_plugin_background", binaryMessenger:_headlessRunner.binaryMessenger)
     }
-    /*
+    
     @nonobjc public func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Check to see if we're being launched due to a location event.
         if launchOptions?[UIApplication.LaunchOptionsKey.location] != nil {
@@ -53,7 +53,7 @@ public class SwiftFlutterGeofencePlugin: NSObject, UIApplicationDelegate {
         
         // Note: if we return NO, this vetos the launch of the application.
         return true;
-    }*/
+    }
     func sendLocationEvent(region:CLCircularRegion,event: Int) -> Void{
         //assert(region is CLCircularRegion, "region must be CLCircularRegion");
         let center:CLLocationCoordinate2D  = region.center;
@@ -145,6 +145,7 @@ extension SwiftFlutterGeofencePlugin: FlutterPlugin{
             result("iOS " + UIDevice.current.systemVersion)
         case "GeofencingPlugin.initializeService":
             if let args = arguments as? [Int64] {
+                print("Server Initialized");
                 startGeofencingService(args[0])
                 result(true)
             } else {
