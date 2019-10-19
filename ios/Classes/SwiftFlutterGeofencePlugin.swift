@@ -142,6 +142,7 @@ extension SwiftFlutterGeofencePlugin: FlutterPlugin{
     }
     @objc
     public static func setPluginRegistrantCallback(_ callback: @escaping FlutterPluginRegistrantCallback) {
+        print("setPluginRegistrantCallback")
         registerPlugins = callback
     }
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
