@@ -152,6 +152,10 @@ class GeofencingManager {
   static Future<void> openAppSettings() async{
       await _channel.invokeMethod('GeofencingPlugin.openSettings');
   }
+  static Future<LocationAuthorizationStatus> getAuhtorizationStatus() async{
+       final int status = await _channel.invokeMethod('GeofencingPlugin.getAuthorizationStatus');
+       return LocationAuthorizationStatus.values[status];
+  }
   /// Stop receiving geofence events for a given [GeofenceRegion].
   static Future<bool> removeGeofence(GeofenceRegion region) async =>
       (region == null) ? false : await removeGeofenceById(region.id);

@@ -218,17 +218,17 @@ extension SwiftFlutterGeofencePlugin: FlutterPlugin{
             let status = CLLocationManager.authorizationStatus()
             switch status{
             case .notDetermined:
-                result(false)
+                result(0)
             case .restricted:
-                result(false)
+                result(1)
             case .denied:
-                result(false)
+                result(2)
             case .authorizedAlways:
-                result(false)
+                result(3)
             case .authorizedWhenInUse:
-                result(false)
+                result(4)
             @unknown default:
-                result(false)
+                result(nil)
             }
         case "GeofencingPlugin.openSettings":
             self.openAppSettings(result: result)

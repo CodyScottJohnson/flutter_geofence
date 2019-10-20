@@ -46,6 +46,9 @@ class _MyAppState extends State<MyApp> {
         geofenceState = data;
       });
     });
+    GeofencingManager.getAuhtorizationStatus().then((value){
+      print(value);
+    });
     initPlatformState();
   }
 

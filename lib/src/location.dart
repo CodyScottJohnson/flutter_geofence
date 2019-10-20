@@ -20,3 +20,10 @@ class Location {
   @override
   String toString() => '($latitude, $longitude)';
 }
+enum LocationAuthorizationStatus {
+  notDetermined,
+  restricted,
+  denied,
+  authorizedAlways,
+  authorizedWhenInUse,
+}
