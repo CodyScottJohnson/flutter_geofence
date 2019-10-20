@@ -1,6 +1,6 @@
 # Flutter Geofence
 
-Package is currently a copy of [FlutterGeofencing](https://github.com/bkonyi/FlutterGeofencing) with the ios platform code rewritten in Swift. It will diverge from that overtime but for know that's what we've got.
+Package is currently a copy of [FlutterGeofencing](https://github.com/bkonyi/FlutterGeofencing) with the ios platform code rewritten in Swift. It will diverge from that overtime but for now that's what we've got.
 
 
 ## Getting Started
