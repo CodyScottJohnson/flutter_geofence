@@ -17,5 +17,8 @@ A new flutter plugin project.
   s.dependency 'Flutter'
 
   s.ios.deployment_target = '8.0'
+  swift_versions = ['4.0', '4.2', '5.0', '5.1']
+  swift_versions << Pod::Validator::DEFAULT_SWIFT_VERSION if Pod::Validator.const_defined? "DEFAULT_SWIFT_VERSION"
+  s.swift_versions = swift_versions
 end
 
