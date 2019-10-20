@@ -1,6 +1,7 @@
-# flutter_geofence
+# Flutter Geofence
 
-A new flutter plugin project.
+Package is currently a copy of [FlutterGeofencing](https://github.com/bkonyi/FlutterGeofencing) with the ios platform code rewritten in Swift. It will diverge from that overtime but for know that's what we've got.
+
 
 ## Getting Started
 
