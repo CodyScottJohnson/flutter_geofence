@@ -149,7 +149,9 @@ class GeofencingManager {
     args.addAll(region._toArgs());
     await _channel.invokeMethod('GeofencingPlugin.registerGeofence', args);
   }
-
+  static Future<void> openAppSettings() async{
+      await _channel.invokeMethod('GeofencingPlugin.openSettings');
+  }
   /// Stop receiving geofence events for a given [GeofenceRegion].
   static Future<bool> removeGeofence(GeofenceRegion region) async =>
       (region == null) ? false : await removeGeofenceById(region.id);

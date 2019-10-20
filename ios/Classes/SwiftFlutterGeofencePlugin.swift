@@ -128,6 +128,25 @@ public class SwiftFlutterGeofencePlugin: NSObject, UIApplicationDelegate {
         }
         return callbackDict!;
     }
+    func openAppSettings(result: FlutterResult) -> Void{
+        if #available(iOS 10, *) {
+            guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
+                return
+            }
+            
+            if UIApplication.shared.canOpenURL(settingsUrl) {
+                UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
+                    print("Settings opened: \(success)") // Prints true
+                })
+            }
+        } else if #available(iOS 8.0, *) {
+            let success =
+                UIApplication.shared.openURL(URL(string:UIApplication.openSettingsURLString)!);
+            result(success);
+        } else {
+            result(false);
+        }
+    }
     
     
     
@@ -193,6 +212,26 @@ extension SwiftFlutterGeofencePlugin: FlutterPlugin{
             } else {
                 result(false);
             }
+        case "GeofencingPlugin.requestAlwaysAuthorization":
+            self._locationManager.requestAlwaysAuthorization()
+        case "GeofencingPlugin.getAuthorizationStatus":
+            let status = CLLocationManager.authorizationStatus()
+            switch status{
+            case .notDetermined:
+                result(false)
+            case .restricted:
+                result(false)
+            case .denied:
+                result(false)
+            case .authorizedAlways:
+                result(false)
+            case .authorizedWhenInUse:
+                result(false)
+            @unknown default:
+                result(false)
+            }
+        case "GeofencingPlugin.openSettings":
+            self.openAppSettings(result: result)
         case "GeofencingPlugin.removeGeofence":
             result(true);
         default:

@@ -114,6 +114,12 @@ class _MyAppState extends State<MyApp> {
                           onPressed: () =>
                               GeofencingManager.removeGeofenceById('mtv')),
                     ),
+                     Center(
+                      child: RaisedButton(
+                          child: const Text('Settings'),
+                          onPressed: () =>
+                              GeofencingManager.openAppSettings()),
+                    ),
                     TextField(
                       decoration: const InputDecoration(
                         hintText: 'Latitude',
